@@ -71,7 +71,13 @@ if (env.microsoft) {
 
 export const auth = betterAuth({
 	appName: "CRM",
-	baseURL: env.apiUrl,
+	// The API and the web app are served from different domains (e.g. a
+	// Fly.io API behind a Vercel app's /api proxy). OAuth callbacks and
+	// session cookies must be computed against the app's public origin —
+	// the only domain the browser actually sees — or the OAuth "state"
+	// cookie set during sign-in never reaches the callback and every
+	// social login fails with state_mismatch.
+	baseURL: env.appUrl,
 
 	database: prismaAdapter(db, {
 		provider: "postgresql",
