@@ -15,9 +15,10 @@ RUN bun install --frozen-lockfile
 
 WORKDIR /app/apps/api
 
+ENV PORT=3000
 EXPOSE 3000
 
 HEALTHCHECK --interval=10s --timeout=5s --start-period=10s --retries=3 \
   CMD bun -e "const res = await fetch('http://localhost:3000/health'); process.exit(res.ok ? 0 : 1)"
 
-CMD ["bun", "run", "api/index.ts"]
+CMD ["bun", "src/main.ts"]
