@@ -4,18 +4,10 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 
-export const getSession = cache(async (): Promise<Session | null> => {
-	const h = await headers();
-	console.log("DEBUG getSession cookie header:", h.get("cookie"));
-	try {
-		const session = await auth.api.getSession({ headers: h });
-		console.log("DEBUG getSession result:", session ? "SESSION FOUND" : "NULL");
-		return session;
-	} catch (error) {
-		console.error("DEBUG getSession threw:", error);
-		throw error;
-	}
-});
+export const getSession = cache(
+	async (): Promise<Session | null> =>
+		auth.api.getSession({ headers: await headers() }),
+);
 
 export async function requireSession(): Promise<Session> {
 	const session = await getSession();
