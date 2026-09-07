@@ -6,11 +6,12 @@ WORKDIR /app
 # so bun can resolve every workspace referenced by the lockfile.
 COPY . .
 
-RUN bun install --frozen-lockfile
-
+# @crm/db's postinstall runs `prisma generate`, which needs DATABASE_URL
+# to resolve prisma.config.ts, so this must be set before `bun install`.
 ARG DATABASE_URL
 ENV DATABASE_URL=${DATABASE_URL}
-RUN cd packages/db && bunx prisma generate
+
+RUN bun install --frozen-lockfile
 
 WORKDIR /app/apps/api
 
