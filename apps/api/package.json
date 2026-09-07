@@ -4,6 +4,9 @@
 	"private": true,
 	"type": "module",
 	"license": "MIT",
+	"engines": {
+		"bun": "1.x"
+	},
 	"exports": {
 		"./app-router": "./src/generated/server.ts"
 	},
